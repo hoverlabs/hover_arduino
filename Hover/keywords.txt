@@ -3,3 +3,4 @@ begin    KEYWORD2
 getEvent     KEYWORD2
 getStatus     KEYWORD2
 setRelease     KEYWORD2
+getEventString     KEYWORD2

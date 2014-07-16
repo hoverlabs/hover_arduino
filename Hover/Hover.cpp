@@ -13,12 +13,12 @@
 #  ===========================================================================
 #
 #  INSTALLATION
-#  Place the Hover_library.py file in the same folder as the Hover_example.py file.
-#  Then run Hover_example.py by typing: sudo python Hover_example.py
+#  The 3 library files (Hover.cpp, Hover.h and keywords.txt) in the Hover folder should be placed in your Arduino Library folder.
+#  Run the HoverDemo.ino file from your Arduino IDE.
 #
 #  SUPPORT
 #  For questions and comments, email us at support@gearseven.com
-#  v2.0
+#  v2.1
 #  ===========================================================================*/
 
 #include <Hover.h>
@@ -59,23 +59,67 @@ boolean Hover::getStatus(int ts) {
 byte Hover::getEvent(void) {
 	byte data;
 	byte event;
-	int c;
+	int c = 0;
     WIRE.requestFrom((uint8_t)_i2caddr, (uint8_t)18);    // request 20 bytes from slave device at 0x42
     while(WIRE.available())    // slave may send less than requested
     {     
 		data = WIRE.read(); // receive a byte as character
-		if (c == 11 && data > 1) {
-			event = ((B0001 << (data-1)) | B100000);
+		if (c == 10 && data > 1) {
+			event = (B00000001 << (data-1)) | B00100000;
 			return event;
 		}
-		if (c == 15) {
+		if (c == 14 && data > B11111) {
 			event = ((data & B11100000) >> 5) | B01000000 ;
 			return event;
 		}
-		if (c == 16) {
+		if (c == 15 && data > 0) {
 			event = (((data & B0011) << 3) | B01000000);
 			return event;
 		}
         c++;
     }
+}
+
+String Hover::getEventString(byte eventByte) {
+
+	//Serial.println("inside string fcn");
+	//return "Test";
+	//Serial.println(eventByte);
+    if (eventByte == B00100010) {
+        //Serial.println("Right swipe");
+		return "Right Swipe";
+    } else if (eventByte == B00100100) {
+        //Serial.println("Left swipe"); 
+		return "Left Swipe";
+
+    } else if (eventByte == B00101000) {
+        //Serial.println("Up swipe");  
+		return "Up Swipe";
+		
+    } else if (eventByte == B00110000) {
+        //Serial.println("Down swipe"); 
+		return "Down Swipe";
+		
+    } else if (eventByte == B01000001) {
+        //Serial.println("Tap south");
+		return "Tap South";
+		
+    } else if (eventByte == B01000010) {
+        //Serial.println("Tap West");
+		return "Tap West";
+		
+    } else if (eventByte == B01010000) {
+        //Serial.println("Tap Center");
+		return "Tap Center";
+		
+    } else if (eventByte == B01001000) {
+        //Serial.println("Tap East"); 
+		return "Tap East";
+		
+    } else if (eventByte == B01000100) {
+        //Serial.println("Tap NORTH");     
+		return "Tap North";
+		
+    } 
+	return "";
 }

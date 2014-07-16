@@ -1,3 +1,4 @@
+
 /*************************************************************************************************************
 #  This is an example for Hover. 
 #  
@@ -12,7 +13,7 @@
 #  BSD license, all text above must be included in any redistribution
 #  ===========================================================================
 #
-#  HOOKUP GUIDE (For Raspberry Pi)
+#  HOOKUP GUIDE (For Arduino)
 #  
 #    =============================
 #   | 1 2 3 4 5 6 7               |                               
@@ -26,13 +27,13 @@
 #   | *                         + |
 #   |_+++++++++++++++++++++++++++_|
 #   
-#  PIN 1 - HOST_V+    ----    3V3 pin 
-#  PIN 2 - RESET      ----    Any Digital Pin.  This example uses GPIO 24 (BCM Mode). 
+#  PIN 1 - HOST_V+    ----    5V Pin or 3v3 Pin depending on what Arduino is running on. 
+#  PIN 2 - RESET      ----    Any Digital Pin.  This example uses Pin 6. 
 #  PIN 3 - SCL        ----    SCL pin
 #  PIN 4 - SDA        ----    SDA pin
 #  PIN 5 - GND        ----    Ground Pin
 #  PIN 6 - 3V3        ----    3V3 pin
-#  PIN 7 - TS         ----    Any Digital Pin.  This example uses GPIO 23 (BCM Mode).
+#  PIN 7 - TS         ----    Any Digital Pin.  This example uses Pin 5.
 #   
 #  =============================================================================
 #
@@ -61,10 +62,11 @@
 #  HISTORY
 #  v1.0  -  Initial Release
 #  v2.0  -  Standardized Output Definition, On Github
+#  v2.1  -  Fixed Count Issue, Update Output String with examples
 #  
 #  INSTALLATION
-#  Place the Hover_library.py file in the same folder as the Hover_example.py file.
-#  Then run Hover_example.py by typing: sudo python Hover_example.py
+#  The 3 library files (Hover.cpp, Hover.h and keywords.txt) in the Hover folder should be placed in your Arduino Library folder.
+#  Run the HoverDemo.ino file from your Arduino IDE.
 #
 #  SUPPORT
 #  For questions and comments, email us at support@gearseven.com
@@ -80,6 +82,7 @@ int reset = 6;
 
 Hover hover = Hover();
 byte event;
+String output_string = "";
 
 void setup() {
   Serial.begin(9600);
@@ -95,29 +98,18 @@ void loop(void) {
     
     //Get the event over i2c and print it
     event = hover.getEvent();
-
-    if (event == B00100010) {
-        Serial.println("Right swipe"); 
-    } else if (event == B00100100) {
-        Serial.println("Left swipe"); 
-    } else if (event == B00101000) {
-        Serial.println("Up swipe");         
-    } else if (event == B00110000) {
-        Serial.println("Down swipe"); 
-    } else if (event == B01000001) {
-        Serial.println("Tap south");
-    } else if (event == B01000010) {
-        Serial.println("Tap West");
-    } else if (event == B01010000) {
-        Serial.println("Tap Center");
-    } else if (event == B01001000) {
-        Serial.println("Tap East"); 
-    } else if (event == B01000100) {
-        Serial.println("Tap NORTH");         
+    
+    
+    //This section can be commented out if you don't want to see the event in text format
+    output_string = hover.getEventString(event);
+    if (output_string != ""){
+      Serial.print(event,BIN);
+      Serial.println(" = " + output_string);
     }
+
+    
     
     //Reset Hover for next event
-    event = B0;
     hover.setRelease(ts);
 
   }
