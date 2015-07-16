@@ -85,7 +85,7 @@
 *********************************************************************************************************/
 
 #include <Wire.h>
-#include <HoverXYZ.h>
+#include <Hover.h>
 
 // pin declarations for Hover
 int ts = 5;
