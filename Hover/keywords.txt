@@ -1,6 +1,14 @@
 Hover   KEYWORD1
+Gesture   KEYWORD1
+Position   KEYWORD1
+Touch   KEYWORD1
 begin    KEYWORD2
-getEvent     KEYWORD2
 getStatus     KEYWORD2
 setRelease     KEYWORD2
-getEventString     KEYWORD2
+getPosition     KEYWORD2
+readPositionData     KEYWORD2
+readI2CData     KEYWORD2
+getGesture     KEYWORD2
+readGestureData     KEYWORD2
+getTouch     KEYWORD2
+readTouchData     KEYWORD2
