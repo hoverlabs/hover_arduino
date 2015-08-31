@@ -36,6 +36,12 @@ class Gesture {
     uint8_t gestureValue;
 };
 
+class Airwheel {
+ public:
+  Airwheel(uint16_t wheelValue);
+  uint16_t wheelValue;
+};
+
 class Touch {
   public:
     Touch();
@@ -51,15 +57,19 @@ class Position {
   uint16_t x, y, z;
 };
 
+
+
 class Hover {
  public:
   Hover(uint8_t ts, uint8_t rst, uint8_t gestmode, uint8_t touchmode, uint8_t tapmode, uint8_t posmode);
   void begin();
   Position getPosition(void);
   Gesture getGesture(void);
+  Airwheel getAirWheelData(void);
   Touch getTouch(void);
   void readI2CData(void);
-
+  
+ 
  private:
   boolean _valid;
   uint8_t _dat[26], _i2caddr, _ts, _rst, _gestmode, _touchmode, _tapmode, _posmode;
@@ -68,7 +78,6 @@ class Hover {
   void readPositionData(uint16_t *x, uint16_t *y, uint16_t *z);
   void readGestureData(char * gtype, uint8_t * gid, uint8_t * gval);
   void readTouchData(char * ttype, uint8_t * tid, uint8_t * tval);
-
 };
 
 

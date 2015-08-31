@@ -12,3 +12,4 @@ getGesture     KEYWORD2
 readGestureData     KEYWORD2
 getTouch     KEYWORD2
 readTouchData     KEYWORD2
+getAirWheelData	    KEYWORD2
