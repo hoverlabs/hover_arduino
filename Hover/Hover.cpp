@@ -109,8 +109,19 @@ Gesture Hover::getGesture(void) {
 	return Gesture(gtype, gid, gval);
 }
 
+Airwheel::Airwheel (uint16_t value){
+		wheelValue = value;
+}
+
+Airwheel Hover::getAirWheelData(void){
+	uint16_t value;
+	value = _dat[19] << 8 | _dat[18];
+	return Airwheel(value);
+}
+
 void Hover::readGestureData(char * gtype, uint8_t * gid, uint8_t * gval) {
 		
+	
 	switch (_dat[10]){
 		case 2: 
 			strcpy(gtype, "Right Swipe");
@@ -140,7 +151,6 @@ void Hover::readGestureData(char * gtype, uint8_t * gid, uint8_t * gval) {
 	}
 
 }
-
 
 Touch::Touch(){
 	strcpy(touchType, "none");

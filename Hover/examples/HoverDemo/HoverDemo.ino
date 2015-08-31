@@ -69,11 +69,15 @@
     | 3D Position  | 0 to 100   | 0 to 100      |   0 to 100    |
     -------------------------------------------------------------
 
+    =============================================================
+    | Airwheel Data - 2 bytes
+    =============================================================
 #  HISTORY
     v1.0  -  Initial Release
     v2.0  -  Standardized Output Definition, On Github
     v2.1  -  Fixed Count Issue, Update Output String with examples
     v3.0  -  Major library update -- added 3D Position, Touch, Double Tap
+    v3.1  -  Added Airwheel detection data output feature
   
 #  INSTALLATION
     The 3 library files (Hover.cpp, Hover.h and keywords.txt) in the Hover folder should be placed in your Arduino Library folder.
@@ -123,7 +127,13 @@ void loop(void) {
   Gesture g = hover.getGesture();
   Touch t = hover.getTouch();
   Position p = hover.getPosition();        
-  
+  Airwheel a = hover.getAirWheelData();  
+ 
+  //Read Airwheel gesture value
+  if(a.wheelValue)
+  {
+    Serial.print("Airwheel: "); Serial.print(a.wheelValue); Serial.print("\r\n");          
+  }  
   // print Gesture data
   if ( g.gestureID != 0){
     Serial.print("Event: "); Serial.print(g.gestureType); Serial.print("\t");          
