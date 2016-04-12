@@ -1,7 +1,7 @@
 hover_arduino
 =============
 
-Arduino Library for Hover (www.justhover.com)
+Arduino Library for Hover (www.hoverlabs.co)
 
 Hover is a development kit that lets you control your hardware projects in a whole new way.  
 Wave goodbye to physical buttons. Hover detects hand movements in the air for touch-less interaction.  

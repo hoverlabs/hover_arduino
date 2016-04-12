@@ -18,7 +18,7 @@
 #
 #  SUPPORT
 #  For questions and comments, email us at support@hoverlabs.co
-#  v3.0
+#  v3.1
 #  ===========================================================================*/
 
 #include <Hover.h>
@@ -110,7 +110,7 @@ Gesture Hover::getGesture(void) {
 }
 
 void Hover::readGestureData(char * gtype, uint8_t * gid, uint8_t * gval) {
-		
+
 	switch (_dat[10]){
 		case 2: 
 			strcpy(gtype, "Right Swipe");
@@ -138,7 +138,11 @@ void Hover::readGestureData(char * gtype, uint8_t * gid, uint8_t * gval) {
 			*gval = 0x00;		
 		break;			
 	}
-
+	if (_dat[7] & 0x02){
+		strcpy(gtype, "Airspin");
+		*gid = 0x02;
+		*gval = _dat[18];
+	}		
 }
 
 

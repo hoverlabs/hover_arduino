@@ -6,29 +6,33 @@
   Wave goodbye to physical buttons. Hover detects hand movements in the air for touch-less interaction.  
   It also features five touch-sensitive regions for even more options.
   Hover uses I2C and 2 digital pins. It is compatible with Arduino, Raspberry Pi and more.
-
   Hover can be purchased here: http://www.hoverlabs.co
   
   Written by Emran Mahbub and Jonathan Li for Hover Labs.  
   BSD license, all text above must be included in any redistribution
   ===========================================================================
-
 #   HOOKUP GUIDE (For Arduino)
   
-    =============================
-   | 1 2 3 4 5 6 7               |      #  PIN 1 - HOST_V+    ----    5V Pin or 3v3 Pin depending on what Arduino is running on.                                
-   |                      HOVER  |      #  PIN 2 - RESET      ----    Any Digital Pin.  This example uses Pin 6. 
-   |                             |      #  PIN 3 - SCL        ----    SCL pin
-   | +++++++++++++++++++++++++++ |      #  PIN 4 - SDA        ----    SDA pin
-   | +                         + |      #  PIN 5 - GND        ----    Ground Pin
-   | +                         + |      #  PIN 6 - 3V3        ----    3V3 pin
-   | *                         + |      #  PIN 7 - TS         ----    Any Digital Pin.  This example uses Pin 5.
-   | *                         + |
-   | *                         + |
-   |_+++++++++++++++++++++++++++_|
+HOVER ORIGINAL ---------------
+  #  PIN 1 - HOST_V+    ----    5V Pin or 3v3 Pin depending on what Arduino is running on.                                
+  #  PIN 2 - RESET      ----    Any Digital Pin.  This example uses Pin 6. 
+  #  PIN 3 - SCL        ----    SCL pin
+  #  PIN 4 - SDA        ----    SDA pin
+  #  PIN 5 - GND        ----    Ground Pin
+  #  PIN 6 - 3V3        ----    3V3 pin
+  #  PIN 7 - TS         ----    Any Digital Pin.  This example uses Pin 5.
+
+HOVER 2.0 --------------------
+   # PIN 1 - HOST_V+    ----    5V Pin or 3v3 Pin depending on what Arduino is running on.                                
+   # PIN 2 - 3.3V       ----    3V3 pin
+   # PIN 3 - GND        ----    Ground Pin
+   # PIN 4 - RESET      ----    Any Digital Pin.  This example uses Pin 6.
+   # PIN 5 - TS         ----    Any Digital Pin.  This example uses Pin 5.
+   # PIN 6 - LED        ----    Optional.  Connect to Resistor and LED for debugging.
+   # PIN 7 - SCL        ----    SCL pin
+   # PIN 8 - SDA        ----    SDA pin
    
   =============================================================================
-
 #   OUTPUT DEFINITION
     The following table defines the event map.   
                   
@@ -40,6 +44,7 @@
     | Left Swipe   | 0x01       | 0x02          |
     | Up Swipe     | 0x01       | 0x03          |
     | Down Swipe   | 0x01       | 0x04          |
+    | Airspin      | 0x02       | 0x00 to 0xFF  |
     ---------------------------------------------
     
     =============================================
@@ -68,20 +73,19 @@
     =============================================================
     | 3D Position  | 0 to 100   | 0 to 100      |   0 to 100    |
     -------------------------------------------------------------
-
 #  HISTORY
     v1.0  -  Initial Release
     v2.0  -  Standardized Output Definition, On Github
     v2.1  -  Fixed Count Issue, Update Output String with examples
     v3.0  -  Major library update -- added 3D Position, Touch, Double Tap
+    v3.1  -  Added Airspin Gesture support
   
 #  INSTALLATION
     The 3 library files (Hover.cpp, Hover.h and keywords.txt) in the Hover folder should be placed in your Arduino Library folder.
     Run the HoverDemo.ino file from your Arduino IDE.
-
+    
 #  SUPPORT
     For questions and comments, email us at support@hoverlabs.co
-
 *********************************************************************************************************/
 
 #include <Wire.h>
@@ -130,20 +134,17 @@ void loop(void) {
     Serial.print("Gesture ID: "); Serial.print(g.gestureID,HEX); Serial.print("\t");
     Serial.print("Value: "); Serial.print(g.gestureValue,HEX); Serial.println("");
   }     
-  
   // print Touch data 
   if ( t.touchID != 0){  
     Serial.print("Event: "); Serial.print(t.touchType); Serial.print("\t");      
     Serial.print("Touch ID: "); Serial.print(t.touchID,HEX); Serial.print("\t");
     Serial.print("Value: "); Serial.print(t.touchValue,HEX); Serial.println("");
   }
-
   // print 3D Position data (x,y,z coordinates)       
   if( (currentMillis - previousMillis > interval)) {
     
     previousMillis = currentMillis;
     if ( !(p.x==0 && p.y==0 && p.x==0) ) {          
-      
       // scale raw position coordinates from (0,65535) to (0, 100). Set to 100 by default. Can be changed to any positive value for the desired granularity.   
       p.x = map(p.x, 0, 65535, 0, 100);
       p.y = map(p.y, 0, 65535, 0, 100);
@@ -153,11 +154,6 @@ void loop(void) {
       Serial.print(p.x); Serial.print(", "); 
       Serial.print(p.y); Serial.print(", "); 
       Serial.print(p.z); Serial.print(")"); Serial.println("");
-    }
-    
+    } 
   }
-
-
 }
-
-
