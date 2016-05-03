@@ -47,7 +47,7 @@ void Hover::begin() {
 	pinMode(_rst, INPUT);    
 
 	/*disable autocal for smoother operation*/
-	uint8_t autoCal[] = {0x10, 0x00, 0x00, 0xA2, 0x80, 0x00 , 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF};
+	uint8_t autoCal[] = {0x10, 0x00, 0x00, 0xA2, 0x80, 0x00 , 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF};
     Wire.beginTransmission(_i2caddr); 
     Wire.write(autoCal, 16);             
     Wire.endTransmission();    
@@ -151,7 +151,6 @@ void Hover::readGestureData(char * gtype, uint8_t * gid, uint8_t * gval) {
 		*gval = _dat[18];
 	}		
 }
-
 
 Touch::Touch(){
 	strcpy(touchType, "none");
