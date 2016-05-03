@@ -43,8 +43,15 @@ void Hover::begin() {
 	pinMode(_ts, INPUT);    
 	pinMode(_rst, OUTPUT);    
 	digitalWrite(_rst, LOW);
+	delay(50);
 	pinMode(_rst, INPUT);    
-	//delay(3000);
+
+	/*disable autocal for smoother operation*/
+	uint8_t autoCal[] = {0x10, 0x00, 0x00, 0xA2, 0x80, 0x00 , 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF};
+    Wire.beginTransmission(_i2caddr); 
+    Wire.write(autoCal, 16);             
+    Wire.endTransmission();    
+
 	Serial.println("Hover is ready");
 }
 
